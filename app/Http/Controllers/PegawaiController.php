@@ -9,29 +9,28 @@ class PegawaiController extends Controller
 {
     public function index()
     {
-        // Hitung umur
-        $tglLahir = Carbon::createFromDate(2000, 1, 1); // Ganti dengan tanggal lahir Anda
+
+        $tglLahir = Carbon::createFromDate(2006, 9, 17);
         $umur = $tglLahir->age;
 
-        // Hitung sisa hari menuju wisuda
-        $tglWisuda = Carbon::createFromDate(2027, 8, 30); // Ganti dengan tanggal wisuda target
+
+        $tglWisuda = Carbon::createFromDate(2028, 11, 30);
         $sisaHari = Carbon::now()->diffInDays($tglWisuda);
 
-        // Tentukan semester saat ini
-        $semester = 5; // Ganti dengan semester Anda saat ini
+        $semester = 3;
 
-        // Tentukan informasi berdasarkan semester
+
         if ($semester < 3) {
             $infoSemester = "Masih Awal, Kejar TAK";
         } else {
-            $infoSemester = "Jangan main-main, kurang-kurangi main game!";
+            $infoSemester = "Jangan banyak main, kurangi malas-malasan";
         }
 
         $data = [
-            'name' => 'Nama Saya', // Ganti dengan nama Anda
+            'name' => 'Della Marcelina', //
             'my_age' => $umur,
-            'hobbies' => ['Membaca', 'Menulis', 'Mendengarkan Musik', 'Bermain Game', 'Memasak'],
-            'tgl_harus_wisuda' => '30 Agustus 2027', // Ganti dengan tanggal wisuda Anda
+            'hobbies' => ['Membaca', 'Menulis', 'Mendengarkan Musik', 'Olahraga', 'Memasak'],
+            'tgl_harus_wisuda' => '30 November 2028', 
             'time_to_study_left' => $sisaHari,
             'current_semester' => $semester,
             'info_semester' => $infoSemester,

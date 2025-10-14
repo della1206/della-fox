@@ -280,17 +280,17 @@
                         </a>
                     </li>
                     <li class="breadcrumb-item"><a href="#">Pelanggan</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Tambah Pelanggan</li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit Pelanggan</li>
                 </ol>
             </nav>
             <div class="d-flex justify-content-between w-100 flex-wrap">
                 <div class="mb-3 mb-lg-0">
                     @csrf
-                    <h1 class="h4">Tambah Pelanggan</h1>
+                    <h1 class="h4">Edit Pelanggan</h1>
                     <p class="mb-0">Form untuk menambahkan data pelanggan baru.</p>
                 </div>
                 <div>
-                    <a href= "{{ route('pelanggan.index') }}" class="btn btn-primary"><i class="far fa-question-circle me-1"></i> Kembali</a>
+                    <a href="" class="btn btn-primary"><i class="far fa-question-circle me-1"></i> Kembali</a>
                 </div>
             </div>
         </div>
@@ -306,13 +306,13 @@
                                     <!-- First Name -->
                                     <div class="mb-3">
                                         <label for="first_name" class="form-label">First name</label>
-                                        <input type="text" id="first_name" class="form-control" required name="first_name" value="{{ old('first_name') }}">
+                                        <input type="text" id="first_name" class="form-control" required name="first_name" value="{{ $dataPelanggan->first_name }}">
                                     </div>
 
                                     <!-- Last Name -->
                                     <div class="mb-3">
                                         <label for="last_name" class="form-label">Last name</label>
-                                        <input type="text" id="last_name" class="form-control" required name="last_name" value="{{ old('last_name') }}">
+                                        <input type="text" id="last_name" class="form-control" required name="last_name" value="{{ $dataPelanggan->last_name }}">
                                     </div>
                                 </div>
 
@@ -320,17 +320,16 @@
                                     <!-- Birthday -->
                                     <div class="mb-3">
                                         <label for="birthday" class="form-label">Birthday</label>
-                                        <input type="date" id="birthday" class="form-control" name="birthday" "{{ old('birthday') }}">
+                                        <input type="date" id="birthday" class="form-control" name="birthday" value="{{ $dataPelanggan->birthday }}">
                                     </div>
 
                                     <!-- Gender -->
                                     <div class="mb-3">
                                         <label for="gender" class="form-label">Gender</label>
                                         <select id="gender" name="gender" class="form-select" name="gender" "{{ old('gender') }}" >
-                                            <option value="">-- Pilih --</option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                            <option value="Other">Other</option>
+                                            <option selected>Gender</option>
+                                            <option value="Male" {{ $dataPelanggan->gender == 'male' ? 'selected' : '' }}>Male</option>
+                                            <option value="Female" {{ $dataPelanggan->gender == 'female' ? 'selected' : '' }}>Female</option>
                                         </select>
                                     </div>
                                 </div>
@@ -339,18 +338,18 @@
                                     <!-- Email -->
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email</label>
-                                        <input type="text" id="email" class="form-control" required name="email" "{{ old('email') }}">
+                                        <input type="text" id="email" class="form-control" required name="email" value="{{ $dataPelanggan->email }}">
                                     </div>
 
                                     <!-- Phone -->
                                     <div class="mb-3">
                                         <label for="phone" class="form-label">Phone</label>
-                                        <input type="text" id="phone" class="form-control" name="phone" "{{ old('phone') }}">
+                                        <input type="text" id="phone" class="form-control" name="phone" value= "{{ $dataPelanggan->phone }}">
                                     </div>
 
                                     <!-- Buttons -->
                                     <div class="">
-                                        <button type="submit" class="btn btn-primary">Simpan Perubahan dan class </button>
+                                        <button type="submit" class="btn btn-primary">Simpan</button>
                                         <a href="{{ route('pelanggan.index') }}" class="btn btn-outline-secondary ms-2">Batal</a name="submit">
                                     </div>
                                 </div>

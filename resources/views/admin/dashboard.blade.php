@@ -36,15 +36,15 @@
 	<meta name="theme-color" content="#ffffff">
 
 	<!-- Volt CSS -->
-	<link type="text/css" href="{{assets('assets-admin/css/volt.css")}}" rel="stylesheet">
+	<link type="text/css" href="{{ assets(assets-admin/css/volt.css)}}" rel="stylesheet">
 
 </head>
 
 <body>
 	<nav class="navbar navbar-dark navbar-theme-primary px-4 col-12 d-lg-none">
 		<a class="navbar-brand me-lg-5" href="../../index.html">
-			<img class="navbar-brand-dark" src="{{assets("assets-admin/img/brand/light.svg")}}" alt="Volt logo" />
-			<img class="navbar-brand-light" src="{{(assets("assets-admin/assets/img/brand/dark.svg")}}" alt="Volt logo" />
+			<img class="navbar-brand-dark" src="{{assets('assets-admin/img/brand/light.svg' )}}" alt="Volt logo" />
+			<img class="navbar-brand-light" src="{{assets('assets-admin/img/brand/dark.svg')}}" alt="Volt logo" />
 		</a>
 		<div class="d-flex align-items-center">
 			<button class="navbar-toggler d-lg-none collapsed" type="button" data-bs-toggle="collapse"
@@ -99,16 +99,6 @@
 						<span class="mt-1 ms-1 sidebar-text">Volt Overview</span>
 					</a>
 				</li>
-                <li class="nav-item  active ">
-		    <a href="" class="nav-link">
-		        <span class="sidebar-icon">
-		            <svg class="icon icon-xs me-2" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-		                <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"></path>
-		            </svg>
-		        </span>
-		        <span class="sidebar-text">Pelanggan</span>
-		    </a>
-		</li>
 				<li class="nav-item  active ">
 					<a href="../../pages/dashboard/dashboard.html" class="nav-link">
 						<span class="sidebar-icon">
@@ -485,7 +475,7 @@
 														<small class="text-danger">2 hrs ago</small>
 													</div>
 												</div>
-												<p class="font-small mt-1 mb-0">You "been assigned a task for "Awesome
+												<p class="font-small mt-1 mb-0">You've been assigned a task for "Awesome
 													new project".</p>
 											</div>
 										</div>
@@ -1210,11 +1200,11 @@
 	</main>
 
 	<!-- Core -->
-	<script src="{{assets("assets-admin/>vendor/@popperjs/core/dist/umd/popper.min.js") }}"></script>
-	<script src="{{assets("assets-admin/bootstrap/dist/js/bootstrap.min.js") }}"></script>
+	<script src="{{assets("assets-admin/vendor/@popperjs/core/dist/umd/popper.min.js") }}"></script>
+	<script src="{{ assert("assets-admin/bootstrap/dist/js/bootstrap.min.js") }}"></script>
 
 	<!-- Vendor JS -->
-	<script src="{{assets("assets-admin/>onscreen/dist/on-screen.umd.min.js")}}"></script>
+	<script src="{{ assets("assets-admin/onscreen/dist/on-screen.umd.min.js") }}"></script>
 </body>
 
 </html>

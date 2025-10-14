@@ -8,7 +8,7 @@
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/css/custom-style.css') }}">
+    <link rel="stylesheet" href="{{ asset('asset/css/custom-style.css') }}">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -57,7 +57,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <img src="{{ asset('assets/images/logo.png') }}" alt="Logo">
+            <img class="" src="{{ asset('asset/images/images.jpg') }}" alt="Logo">
             <a class="navbar-brand" href="#">My Laravel App</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,7 +86,7 @@
     <section class="hero-section">
         <div class="container">
             <h1 class="display-6 mb-2 font-custom"> {{ $username }} </h1>
-            <p class="lead mb-0">{{ $last_login }} </p>
+            <p class="lead mb-0"> {{ $last_login }} </p>
         </div>
     </section>
 
@@ -147,7 +147,7 @@
                         </div>
                         <ul class="list-group mb-3">
                             @foreach ($list_pendidikan as $item)
-                                <li class="list-group-item">{{ $item }}</li>
+                                <li class="list-group-item"> {{ $item }} </li>
                             @endforeach
                         </ul>
                         <div class="p-3 border rounded">
@@ -164,23 +164,24 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Form Pertanyaan</h5>
+
                         @if ($errors->any())
                             <div class="alert alert-danger">
                                 <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
+                                    @foreach ($errors->all() as $errors)
+                                        <li>{{ $errors }}</li>
                                     @endforeach
                                 </ul>
                             </div>
                         @endif
 
-                        @if (session('info'))
+                        @if (session('info_terimakasih'))
                             <div class="alert alert-info">
-                                {!! session('info') !!}
+                                {!! session('info_terimakasih') !!}
                             </div>
                         @endif
 
-                        <form action="{{ route('pelanggan.store') }}" method="POST">
+                        <form action="{{ route('question.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
                                 <label for="nama" class="form-label">Nama</label>
@@ -188,17 +189,18 @@
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="text" class="form-control" name="email"value="{{ old('email') }}">
+                                <input type="text" class="form-control" name="email" "{{ old('email') }}">
                             </div>
                             <div class="mb-3">
                                 <label for="pertanyaan" class="form-label">Pertanyaan</label>
-                                <textarea class="form-control" id="pertanyaan" rows="4" name="pertanyaan"> {{ old('pertanyaan') }}</textarea>
+                                <textarea class="form-control" rows="4" name="pertanyaan">"{{ old('pertanyaan') }}"</textarea>
                             </div>
                             <button type="submit" class="btn btn-primary">Kirim Pertanyaan</button>
                         </form>
                     </div>
                 </div>
                 {{-- Alerts --}}
+
                 <div class="card ">
                     <div class="card-body">
                         <h3 class="h5 mb-3">Alerts</h3>
@@ -260,11 +262,11 @@
                             </table>
                         </div>
                         <p class="text-muted small mb-0">Tambahkan <code>.table-striped</code> atau
-                            <code>.table-bordered</code> sesuai kebutuhan.
-                        </p>
+                            <code>.table-bordered</code> sesuai kebutuhan.</p>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </section>
 

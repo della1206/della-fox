@@ -180,7 +180,7 @@
                             </div>
                         @endif
 
-                        <form action="{{ route('question.store') }}" method="POST">
+                        <form action="{{ route('pelanggan.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
                                 <label for="nama" class="form-label">Nama</label>

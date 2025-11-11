@@ -50,10 +50,6 @@
 
     <main class="content">
 
-        {{-- start header --}}
-        @include('layouts.admin.header')
-        {{-- end header --}}
-
         {{-- start main content --}}
         @yield('content')
         {{-- end main content --}}

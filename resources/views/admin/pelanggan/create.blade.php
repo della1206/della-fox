@@ -1,6 +1,7 @@
-@extends('layouts.admin.app')
+user create @extends('layouts.admin.app')
 
 @section('content')
+    {{-- START MAIN CONTENT --}}
     <div class="py-4">
         <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
             <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
@@ -14,94 +15,78 @@
                         </svg>
                     </a>
                 </li>
-                <li class="breadcrumb-item"><a href="#">Pelanggan</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Tambah Pelanggan</li>
+                <li class="breadcrumb-item"><a href="#">User</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Tambah User</li>
             </ol>
         </nav>
         <div class="d-flex justify-content-between w-100 flex-wrap">
             <div class="mb-3 mb-lg-0">
-                @csrf
-                <h1 class="h4">Tambah Pelanggan </h1>
-                <p class="mb-0">Form untuk menambahkan data pelanggan baru.</p>
+                <h1 class="h4">Tambah User</h1>
+                <p class="mb-0">Form untuk menambahkan data User baru.</p>
             </div>
             <div>
-                <a href="{{ route('pelanggan.index') }}" class="btn btn-primary"><i class="far fa-question-circle me-1"></i>
+                <a href="{{ route('user.index') }}" class="btn btn-primary"><i class="far fa-question-circle me-1"></i>
                     Kembali</a>
             </div>
         </div>
     </div>
-
+    @if (session('success'))
+        <div class="alert alert-info">
+            {!! session('success') !!}
+        </div>
+    @endif
     <div class="row">
         <div class="col-12 mb-4">
             <div class="card border-0 shadow components-section">
                 <div class="card-body">
-                    <form action="{{ route('pelanggan.store') }}" method="POST">
+                    <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row mb-4">
                             <div class="col-lg-4 col-sm-6">
-                                <!-- First Name -->
+                                <!-- Profile Picture -->
                                 <div class="mb-3">
-                                    <label for="first_name" class="form-label">First name</label>
-                                    <input type="text" id="first_name" class="form-control" required name="first_name"
-                                        value="{{ old('first_name') }}">
+                                    <label for="profile_picture" class="form-label">Foto Profil</label>
+                                    <input type="file" id="profile_picture" class="form-control" name="profile_picture" accept="image/*">
+                                    <small class="text-muted">Format: JPEG, PNG, JPG, GIF (Max: 2MB)</small>
                                 </div>
 
-                                <!-- Last Name -->
+                                <!-- Name -->
                                 <div class="mb-3">
-                                    <label for="last_name" class="form-label">Last name</label>
-                                    <input type="text" id="last_name" class="form-control" required name="last_name"
-                                        value="{{ old('last_name') }}">
+                                    <label for="name" class="form-label">Name</label>
+                                    <input type="text" id="name" class="form-control" required name="name">
+                                </div>
+
+                                <!-- Email -->
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="text" id="email" class="form-control" required name="email">
                                 </div>
                             </div>
 
                             <div class="col-lg-4 col-sm-6">
-                                <!-- Birthday -->
+                                <!-- Password -->
                                 <div class="mb-3">
-                                    <label for="birthday" class="form-label">Birthday</label>
-                                    <input type="date" id="birthday" class="form-control"
-                                        name="birthday" "{{ old('birthday') }}">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" id="password" class="form-control" name="password">
                                 </div>
 
-                                <!-- Gender -->
+                                <!-- Password Confirmation -->
                                 <div class="mb-3">
-                                    <label for="gender" class="form-label">Gender</label>
-                                    <select id="gender" name="gender" class="form-select"
-                                        name="gender" "{{ old('gender') }}">
-                                        <option value="">-- Pilih --</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Other">Other</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4 col-sm-12">
-                                <!-- Email -->
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="text" id="email" class="form-control" required
-                                        name="email" "{{ old('email') }}">
-                                </div>
-
-                                <!-- Phone -->
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label">Phone</label>
-                                    <input type="text" id="phone" class="form-control"
-                                        name="phone" "{{ old('phone') }}">
+                                    <label for="password_confirmation" class="form-label">Password Confirmation</label>
+                                    <input type="password" id="password_confirmation" class="form-control" name="password_confirmation">
                                 </div>
 
                                 <!-- Buttons -->
-                                <div class="">
-                                    <button type="submit" class="btn btn-primary">simpan</button>
-                                    <a href="{{ route('pelanggan.index') }}" class="btn btn-outline-secondary ms-2">Batal</a
-                                        name="submit">
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                    <a href="{{ route('user.index') }}" class="btn btn-outline-secondary ms-2">Batal</a>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
+    {{-- END MAIN CONTENT --}}
 @endsection

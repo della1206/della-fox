@@ -1,14 +1,18 @@
 <?php
+// app/Models/Pelanggan.php
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Pelanggan extends Model
 {
-    protected $table      = 'pelanggan';
+    use HasFactory;
+
+    protected $table = 'pelanggan';
     protected $primaryKey = 'pelanggan_id';
-    protected $fillable   = [
+    
+    protected $fillable = [
         'first_name',
         'last_name',
         'birthday',
@@ -16,23 +20,17 @@ class Pelanggan extends Model
         'email',
         'phone',
     ];
-    public function scopeFilter(Builder $query, $request, array $filterableColumns): Builder
+
+    // Relasi ke multipleuploads
+    public function files()
     {
-        foreach ($filterableColumns as $column) {
-            if ($request->filled($column)) {
-                $query->where($column, $request->input($column));
-            }
-        }
-        return $query;
+        return $this->hasMany(Multipleuploads::class, 'ref_id', 'pelanggan_id')
+                    ->where('ref_table', 'pelanggan');
     }
-    public function scopeSearch($query, $request, array $columns)
+
+    // Accessor untuk nama lengkap
+    public function getNamaLengkapAttribute()
     {
-        if ($request->filled('search')) {
-            $query->where(function ($q) use ($request, $columns) {
-                foreach ($columns as $column) {
-                    $q->orWhere($column, 'LIKE', '%' . $request->search . '%');
-                }
-            });
-        }
+        return $this->first_name . ' ' . $this->last_name;
     }
 }

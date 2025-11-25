@@ -1,5 +1,5 @@
 <?php
-
+// app/Models/User.php
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profile_picture', // TAMBAHKAN INI
     ];
 
     /**

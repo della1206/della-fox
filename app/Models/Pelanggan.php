@@ -21,7 +21,7 @@ class Pelanggan extends Model
         'phone',
     ];
 
-    // Relasi ke multipleuploads
+    // Relasi yang BENAR ke multipleuploads
     public function files()
     {
         return $this->hasMany(Multipleuploads::class, 'ref_id', 'pelanggan_id')

@@ -189,20 +189,29 @@ class PelangganController extends Controller
     /**
      * Hapus file individual
      */
-    public function deleteFile(Request $request, string $id)
+public function deleteFile(Request $request, string $id)
     {
         $file = Multipleuploads::findOrFail($id);
         
         // Pastikan file milik pelanggan yang dimaksud
         if ($file->ref_table === 'pelanggan') {
+            // Hapus file dari storage
             if (file_exists(public_path('uploads/' . $file->filename))) {
                 unlink(public_path('uploads/' . $file->filename));
             }
+            
+            // Hapus record dari database
             $file->delete();
             
-            return response()->json(['success' => true, 'message' => 'File berhasil dihapus']);
+            return response()->json([
+                'success' => true, 
+                'message' => 'File berhasil dihapus'
+            ]);
         }
         
-        return response()->json(['success' => false, 'message' => 'File tidak ditemukan'], 404);
+        return response()->json([
+            'success' => false, 
+            'message' => 'File tidak ditemukan'
+        ], 404);
     }
 }

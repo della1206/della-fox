@@ -45,7 +45,9 @@ route::get('/pegawai', [PegawaiController::class,'index']);
 Route::post('question/store', [QuestionController::class, 'store'])
 		->name('question.store');
 
-route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+route::get('dashboard', [DashboardController::class, 'index'])
+        ->name('dashboard')
+        ->middleware('checkislogin');
 
 Route::resource('user', UserController::class);
 
@@ -56,3 +58,7 @@ Route::delete('/pelanggan-file/{id}', [PelangganController::class, 'deleteFile']
 Route::get('auth', [AuthController::class,'index'])->name('auth.index');
 Route::post('auth/login', [AuthController::class,'login'])->name ('auth.login');
 Route::get('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
+Route::group(['middleware' => ['checkrole: Super Admin']], function (){
+    Route::get('user', [UserController::class,'index'])->name('user.list');
+});

@@ -1,7 +1,6 @@
-user create @extends('layouts.admin.app')
+@extends('layouts.admin.app')
 
 @section('content')
-    {{-- START MAIN CONTENT --}}
     <div class="py-4">
         <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
             <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
@@ -15,71 +14,157 @@ user create @extends('layouts.admin.app')
                         </svg>
                     </a>
                 </li>
-                <li class="breadcrumb-item"><a href="#">User</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Tambah User</li>
+                <li class="breadcrumb-item"><a href="{{ route('pelanggan.index') }}">Pelanggan</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Tambah Pelanggan</li>
             </ol>
         </nav>
         <div class="d-flex justify-content-between w-100 flex-wrap">
             <div class="mb-3 mb-lg-0">
-                <h1 class="h4">Tambah User</h1>
-                <p class="mb-0">Form untuk menambahkan data User baru.</p>
+                <h1 class="h4">Tambah Pelanggan</h1>
+                <p class="mb-0">Form untuk menambahkan data pelanggan baru.</p>
             </div>
             <div>
-                <a href="{{ route('user.index') }}" class="btn btn-primary"><i class="far fa-question-circle me-1"></i>
-                    Kembali</a>
+                <a href="{{ route('pelanggan.index') }}" class="btn btn-primary">
+                    <i class="far fa-question-circle me-1"></i> Kembali
+                </a>
             </div>
         </div>
     </div>
-    @if (session('success'))
-        <div class="alert alert-info">
-            {!! session('success') !!}
+
+    {{-- Tampilkan error validasi --}}
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <h6>Terjadi kesalahan:</h6>
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
     @endif
+
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="row">
         <div class="col-12 mb-4">
             <div class="card border-0 shadow components-section">
                 <div class="card-body">
-                    <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('pelanggan.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row mb-4">
                             <div class="col-lg-4 col-sm-6">
-                                <!-- Profile Picture -->
+                                <!-- First Name -->
                                 <div class="mb-3">
-                                    <label for="profile_picture" class="form-label">Foto Profil</label>
-                                    <input type="file" id="profile_picture" class="form-control" name="profile_picture" accept="image/*">
-                                    <small class="text-muted">Format: JPEG, PNG, JPG, GIF (Max: 2MB)</small>
+                                    <label for="first_name" class="form-label">First name <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" id="first_name" name="first_name"
+                                        class="form-control @error('first_name') is-invalid @enderror"
+                                        value="{{ old('first_name') }}" required>
+                                    @error('first_name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
-                                <!-- Name -->
+                                <!-- Last Name -->
                                 <div class="mb-3">
-                                    <label for="name" class="form-label">Name</label>
-                                    <input type="text" id="name" class="form-control" required name="name">
-                                </div>
-
-                                <!-- Email -->
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="text" id="email" class="form-control" required name="email">
+                                    <label for="last_name" class="form-label">Last name <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" id="last_name" name="last_name"
+                                        class="form-control @error('last_name') is-invalid @enderror"
+                                        value="{{ old('last_name') }}" required>
+                                    @error('last_name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
                             <div class="col-lg-4 col-sm-6">
-                                <!-- Password -->
+                                <!-- Birthday -->
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" id="password" class="form-control" name="password">
+                                    <label for="birthday" class="form-label">Birthday <span
+                                            class="text-danger">*</span></label>
+                                    <input type="date" id="birthday" name="birthday"
+                                        class="form-control @error('birthday') is-invalid @enderror"
+                                        value="{{ old('birthday') }}" required>
+                                    @error('birthday')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
-                                <!-- Password Confirmation -->
+                                <!-- Gender -->
                                 <div class="mb-3">
-                                    <label for="password_confirmation" class="form-label">Password Confirmation</label>
-                                    <input type="password" id="password_confirmation" class="form-control" name="password_confirmation">
+                                    <label for="gender" class="form-label">Gender <span
+                                            class="text-danger">*</span></label>
+                                    <select id="gender" name="gender"
+                                        class="form-select @error('gender') is-invalid @enderror" required>
+                                        <option value="">-- Pilih --</option>
+                                        <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>Male
+                                        </option>
+                                        <option value="Female" {{ old('gender') == 'Female' ? 'selected' : '' }}>Female
+                                        </option>
+                                        <option value="Other" {{ old('gender') == 'Other' ? 'selected' : '' }}>Other
+                                        </option>
+                                    </select>
+                                    @error('gender')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-sm-12">
+                                <!-- Email -->
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email <span
+                                            class="text-danger">*</span></label>
+                                    <input type="email" id="email"
+                                        class="form-control @error('email') is-invalid @enderror" name="email"
+                                        value="{{ old('email') }}" required>
+                                    @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <!-- Phone -->
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Phone <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" id="phone"
+                                        class="form-control @error('phone') is-invalid @enderror" name="phone"
+                                        value="{{ old('phone') }}" required>
+                                    @error('phone')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <!-- Upload File - PERBAIKAN: Support berbagai jenis file -->
+                                <div class="mb-3">
+                                    <label for="files" class="form-label">Upload File (Multiple)</label>
+                                    <input type="file" class="form-control @error('files.*') is-invalid @enderror"
+                                        name="files[]" id="files" multiple>
+                                    <small class="text-muted">
+                                        Tekan CTRL saat memilih file untuk memilih lebih dari satu.<br>
+                                        Format yang didukung: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, PNG, GIF (Max: 5MB)
+                                    </small>
+                                    @error('files.*')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <!-- Buttons -->
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary">Simpan</button>
-                                    <a href="{{ route('user.index') }}" class="btn btn-outline-secondary ms-2">Batal</a>
+                                    <a href="{{ route('pelanggan.index') }}"
+                                        class="btn btn-outline-secondary ms-2">Batal</a>
                                 </div>
                             </div>
                         </div>
@@ -88,5 +173,4 @@ user create @extends('layouts.admin.app')
             </div>
         </div>
     </div>
-    {{-- END MAIN CONTENT --}}
 @endsection

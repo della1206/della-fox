@@ -13,7 +13,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data['dataUser'] = User::paginate(10); 
+        $data['dataUser'] = User::paginate(10);
         return view('admin.user.index', $data);
     }
 
@@ -40,6 +40,7 @@ class UserController extends Controller
         $data = [
             'name' => $request->name,
             'email' => $request->email,
+            'role' =>$request->role,
             'password' => Hash::make($request->password),
         ];
 
@@ -99,7 +100,7 @@ class UserController extends Controller
             if ($user->profile_picture) {
                 Storage::disk('public')->delete($user->profile_picture);
             }
-            
+
             $path = $request->file('profile_picture')->store('profile_pictures', 'public');
             $user->profile_picture = $path;
         }

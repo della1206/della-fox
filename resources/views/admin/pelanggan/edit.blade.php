@@ -1,7 +1,6 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    {{-- START MAIN CONTENT --}}
     <div class="py-4">
         <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
             <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
@@ -15,14 +14,14 @@
                         </svg>
                     </a>
                 </li>
-                <li class="breadcrumb-item"><a href="#">Pelanggan</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('pelanggan.index') }}">Pelanggan</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Edit Pelanggan</li>
             </ol>
         </nav>
         <div class="d-flex justify-content-between w-100 flex-wrap">
             <div class="mb-3 mb-lg-0">
                 <h1 class="h4">Edit Pelanggan</h1>
-                <p class="mb-0">Form untuk edit data pelanggan.</p>
+                <p class="mb-0">Form untuk mengedit data pelanggan.</p>
             </div>
             <div>
                 <a href="{{ route('pelanggan.index') }}" class="btn btn-primary">
@@ -32,9 +31,19 @@
         </div>
     </div>
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     @if (session('success'))
-        <div class="alert alert-info">
-            {!! session('success') !!}
+        <div class="alert alert-success">
+            {{ session('success') }}
         </div>
     @endif
 
@@ -42,191 +51,171 @@
         <div class="col-12 mb-4">
             <div class="card border-0 shadow components-section">
                 <div class="card-body">
-                    <form action="{{ route('pelanggan.update', $pelanggan->pelanggan_id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('pelanggan.update', $dataPelanggan->pelanggan_id) }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        
-                        <!-- Input Hidden untuk ref_table dan ref_id -->
-                        <input type="hidden" name="ref_table" value="pelanggan">
-                        <input type="hidden" name="ref_id" value="{{ $pelanggan->pelanggan_id }}">
-
                         <div class="row mb-4">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4 col-sm-6">
                                 <!-- First Name -->
                                 <div class="mb-3">
-                                    <label for="first_name" class="form-label">First Name</label>
-                                    <input type="text" id="first_name" class="form-control" required 
-                                           name="first_name" value="{{ $pelanggan->first_name }}">
+                                    <label for="first_name" class="form-label">First name <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" id="first_name"
+                                        class="form-control @error('first_name') is-invalid @enderror" required
+                                        name="first_name" value="{{ old('first_name', $dataPelanggan->first_name) }}">
+                                    @error('first_name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <!-- Last Name -->
                                 <div class="mb-3">
-                                    <label for="last_name" class="form-label">Last Name</label>
-                                    <input type="text" id="last_name" class="form-control" required 
-                                           name="last_name" value="{{ $pelanggan->last_name }}">
-                                </div>
-
-                                <!-- Birthday -->
-                                <div class="mb-3">
-                                    <label for="birthday" class="form-label">Birthday</label>
-                                    <input type="date" id="birthday" class="form-control" 
-                                           name="birthday" value="{{ $pelanggan->birthday }}">
+                                    <label for="last_name" class="form-label">Last name <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" id="last_name"
+                                        class="form-control @error('last_name') is-invalid @enderror" required
+                                        name="last_name" value="{{ old('last_name', $dataPelanggan->last_name) }}">
+                                    @error('last_name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
-                            <div class="col-lg-6">
-                                <!-- Gender -->
+                            <div class="col-lg-4 col-sm-6">
+                                <!-- Birthday -->
                                 <div class="mb-3">
-                                    <label for="gender" class="form-label">Gender</label>
-                                    <select id="gender" class="form-control" name="gender">
-                                        <option value="">Pilih Gender</option>
-                                        <option value="Male" {{ $pelanggan->gender == 'Male' ? 'selected' : '' }}>Male</option>
-                                        <option value="Female" {{ $pelanggan->gender == 'Female' ? 'selected' : '' }}>Female</option>
-                                        <option value="Other" {{ $pelanggan->gender == 'Other' ? 'selected' : '' }}>Other</option>
-                                    </select>
+                                    <label for="birthday" class="form-label">Birthday <span
+                                            class="text-danger">*</span></label>
+                                    <input type="date" id="birthday"
+                                        class="form-control @error('birthday') is-invalid @enderror" name="birthday"
+                                        value="{{ old('birthday', $dataPelanggan->birthday) }}">
+                                    @error('birthday')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
+                                <!-- Gender -->
+                                <div class="mb-3">
+                                    <label for="gender" class="form-label">Gender <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-select @error('gender') is-invalid @enderror" id="gender"
+                                        name="gender" required>
+                                        <option value="">-- Pilih --</option>
+                                        <option value="Male"
+                                            {{ old('gender', $dataPelanggan->gender) == 'Male' ? 'selected' : '' }}>Male
+                                        </option>
+                                        <option value="Female"
+                                            {{ old('gender', $dataPelanggan->gender) == 'Female' ? 'selected' : '' }}>
+                                            Female</option>
+                                        <option value="Other"
+                                            {{ old('gender', $dataPelanggan->gender) == 'Other' ? 'selected' : '' }}>Other
+                                        </option>
+                                    </select>
+                                    @error('gender')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-sm-12">
                                 <!-- Email -->
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" id="email" class="form-control" required 
-                                           name="email" value="{{ $pelanggan->email }}">
+                                    <label for="email" class="form-label">Email <span
+                                            class="text-danger">*</span></label>
+                                    <input type="email" id="email"
+                                        class="form-control @error('email') is-invalid @enderror" required name="email"
+                                        value="{{ old('email', $dataPelanggan->email) }}">
+                                    @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <!-- Phone -->
                                 <div class="mb-3">
-                                    <label for="phone" class="form-label">Phone</label>
-                                    <input type="text" id="phone" class="form-control" 
-                                           name="phone" value="{{ $pelanggan->phone }}">
+                                    <label for="phone" class="form-label">Phone <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" id="phone"
+                                        class="form-control @error('phone') is-invalid @enderror" name="phone"
+                                        value="{{ old('phone', $dataPelanggan->phone) }}">
+                                    @error('phone')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <!-- Upload File Baru -->
+                                <div class="mb-3">
+                                    <label for="files" class="form-label fw-bold">Tambah File Baru</label>
+                                    <input type="file" class="form-control @error('files.*') is-invalid @enderror"
+                                        name="files[]" multiple accept="*/*">
+                                    <small class="text-muted">
+                                        Bisa pilih banyak sekaligus. File lama tidak akan hilang kecuali dihapus.<br>
+                                        Format yang didukung: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, PNG, GIF (Max: 5MB)
+                                    </small>
+                                    @error('files.*')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <!-- Buttons -->
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                    <a href="{{ route('pelanggan.index') }}"
+                                        class="btn btn-outline-secondary ms-2">Batal</a>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Multiple File Upload Section -->
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5 class="card-title">File Pendukung</h5>
-                                        <p class="card-text text-muted">Upload file pendukung untuk pelanggan (maksimal 2MB per file)</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <!-- Form Upload File Baru -->
-                                        <div class="mb-4">
-                                            <label for="files" class="form-label">Tambah File Baru</label>
-                                            <input type="file" id="files" class="form-control" 
-                                                   name="files[]" multiple accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.txt">
-                                            <small class="text-muted">Format: JPG, JPEG, PNG, PDF, DOC, DOCX, TXT (Max: 2MB per file)</small>
-                                        </div>
-
-                                        <!-- Daftar File yang Sudah Diupload -->
-                                        @if($pelanggan->files->count() > 0)
-                                            <div class="mt-4">
-                                                <h6>File Terupload:</h6>
-                                                <div class="table-responsive">
-                                                    <table class="table table-sm table-bordered">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Nama File</th>
-                                                                <th>Tipe</th>
-                                                                <th>Preview</th>
-                                                                <th>Aksi</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach($pelanggan->files as $file)
-                                                                <tr>
-                                                                    <td>{{ $file->filename }}</td>
-                                                                    <td>
-                                                                        <span class="badge bg-info">{{ strtoupper($file->file_extension) }}</span>
-                                                                    </td>
-                                                                    <td>
-                                                                        @if($file->is_image)
-                                                                            <img src="{{ $file->file_url }}" alt="Preview" class="img-thumbnail" style="max-height: 50px;">
-                                                                        @else
-                                                                            <span class="text-muted">No Preview</span>
-                                                                        @endif
-                                                                    </td>
-                                                                    <td>
-                                                                        <a href="{{ $file->file_url }}" target="_blank" class="btn btn-sm btn-info">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </a>
-                                                                        <button type="button" class="btn btn-sm btn-danger delete-file" 
-                                                                                data-file-id="{{ $file->id }}">
-                                                                            <i class="fas fa-trash"></i>
-                                                                        </button>
-                                                                    </td>
-                                                                </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        @else
-                                            <div class="alert alert-info">
-                                                <i class="fas fa-info-circle me-2"></i>
-                                                Belum ada file pendukung yang diupload.
-                                            </div>
-                                        @endif
-                                    </div>
-                                </div>
+                        <!-- Tampilkan File yang Sudah Ada -->
+@if($dataPelanggan->files && is_array($dataPelanggan->files) && count($dataPelanggan->files) > 0)
+<div class="row mb-4">
+    <div class="col-12">
+        <h6>File Terupload:</h6>
+        <div class="row">
+            @foreach($dataPelanggan->files as $file)
+                @if(is_array($file) && isset($file['path']))
+                <div class="col-md-3 mb-3">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <!-- Selalu tampilkan icon file -->
+                            <div class="mb-2" style="font-size: 3rem;">
+                                <i class="fas fa-file text-primary"></i>
                             </div>
-                        </div>
 
-                        <!-- Buttons -->
-                        <div class="row">
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                                <a href="{{ route('pelanggan.show', $pelanggan->pelanggan_id) }}" class="btn btn-info">
-                                    <i class="fas fa-eye me-1"></i> Lihat Detail
+                            <h6 class="card-title small">
+                                {{ isset($file['name']) ? Str::limit($file['name'], 20) : 'File' }}
+                            </h6>
+
+                            <div class="btn-group btn-group-sm">
+                                <a href="{{ asset('storage/files/' . $file['path']) }}"
+                                   target="_blank"
+                                   class="btn btn-info">
+                                    <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="{{ route('pelanggan.index') }}" class="btn btn-outline-secondary ms-2">Batal</a>
+                                <form action="{{ route('pelanggan.deleteFile', [$dataPelanggan->pelanggan_id, $file['path']]) }}"
+                                      method="POST"
+                                      style="display:inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                            class="btn btn-danger"
+                                            onclick="return confirm('Hapus file ini?')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
                             </div>
                         </div>
+                    </div>
+                </div>
+                @endif
+            @endforeach
+        </div>
+    </div>
+</div>
+@endif
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    {{-- END MAIN CONTENT --}}
 @endsection
-
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Handle delete file
-    document.querySelectorAll('.delete-file').forEach(button => {
-        button.addEventListener('click', function() {
-            const fileId = this.getAttribute('data-file-id');
-            if (confirm('Apakah Anda yakin ingin menghapus file ini?')) {
-                fetch(/pelanggan-file/${fileId}, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        this.closest('tr').remove();
-                        // Show success message
-                        alert('File berhasil dihapus');
-                        // Reload page if no files left
-                        if (document.querySelectorAll('.delete-file').length === 0) {
-                            location.reload();
-                        }
-                    } else {
-                        alert('Gagal menghapus file');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Terjadi kesalahan saat menghapus file');
-                });
-            }
-        });
-    });
-});
-</script>
-@endpush

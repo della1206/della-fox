@@ -81,7 +81,7 @@
                                                     method="POST" style="display:inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" 
+                                                    <button type="submit" class="btn btn-danger btn-sm"
                                                             onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')">
                                                         <svg class="icon icon-xs me-1" data-slot="icon" fill="none"
                                                             stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
@@ -100,7 +100,7 @@
                             </tbody>
                         </table>
                     </div>
-                    
+
                     <!-- Pagination -->
                     <div class="mt-4 d-flex justify-content-between align-items-center">
                         <div class="text-muted">

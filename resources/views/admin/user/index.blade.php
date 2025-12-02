@@ -37,14 +37,14 @@
                 {!! session('success') !!}
             </div>
         @endif
-        
+
         <div class="col-12 mb-4">
             <div class="card border-0 shadow mb-4">
                 <div class="card-header bg-light">
                     <div class="row align-items-center">
                         <div class="col-md-6">
                             <span class="text-muted">
-                                Menampilkan {{ $dataUser->firstItem() }} - {{ $dataUser->lastItem() }} 
+                                Menampilkan {{ $dataUser->firstItem() }} - {{ $dataUser->lastItem() }}
                                 dari {{ $dataUser->total() }} data
                             </span>
                         </div>
@@ -76,7 +76,7 @@
                                         </td>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->email }}</td>
-                                        <td>
+                                        <>{{ $item->email }}</>
                                             <div class="btn-group">
                                                 <a href="{{ route('user.edit', $item->id) }}"
                                                     class="btn btn-info btn-sm">
@@ -111,8 +111,8 @@
                     <div class="card-footer">
                         <div class="row align-items-center">
                             <div class="col-sm-4 text-muted">
-                                Menampilkan <strong>{{ $dataUser->firstItem() }}</strong> - 
-                                <strong>{{ $dataUser->lastItem() }}</strong> dari 
+                                Menampilkan <strong>{{ $dataUser->firstItem() }}</strong> -
+                                <strong>{{ $dataUser->lastItem() }}</strong> dari
                                 <strong>{{ $dataUser->total() }}</strong> data
                             </div>
                             <div class="col-sm-8 d-flex justify-content-end">

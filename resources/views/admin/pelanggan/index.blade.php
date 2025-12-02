@@ -1,7 +1,6 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    {{-- START MAIN CONTENT --}}
     <div class="py-4">
         <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
             <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
@@ -25,106 +24,99 @@
             </div>
             <div>
                 <a href="{{ route('pelanggan.create') }}" class="btn btn-success text-white">
-                    <i class="fas fa-plus me-1"></i> Tambah Pelanggan
+                    <i class="far fa-question-circle me-1"></i> Tambah Pelanggan
                 </a>
             </div>
         </div>
     </div>
 
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="row">
-        @if (session('success'))
-            <div class="alert alert-primary">
-                {!! session('success') !!}
-            </div>
-        @endif
-        
         <div class="col-12 mb-4">
             <div class="card border-0 shadow mb-4">
-                <div class="card-header bg-light">
-                    <div class="row align-items-center">
-                        <div class="col-md-6">
-                            <!-- Filter dan Search -->
-                            <form method="GET" action="{{ route('pelanggan.index') }}" class="d-flex align-items-center gap-2">
-                                <!-- Filter Gender -->
-                                <select name="gender" class="form-select" onchange="this.form.submit()" style="width: auto;">
-                                    <option value="All Gender" {{ $selectedGender == 'All Gender' ? 'selected' : '' }}>All Gender</option>
-                                    <option value="Male" {{ $selectedGender == 'Male' ? 'selected' : '' }}>Male</option>
-                                    <option value="Female" {{ $selectedGender == 'Female' ? 'selected' : '' }}>Female</option>
-                                    <option value="Other" {{ $selectedGender == 'Other' ? 'selected' : '' }}>Other</option>
-                                </select>
-                                
-                                <!-- Search -->
-                                <div class="input-group" style="width: 300px;">
-                                    <input type="text" name="search" class="form-control" placeholder="Search..." 
-                                           value="{{ $search }}">
-                                    <button class="btn btn-outline-secondary" type="submit">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                    @if($search)
-                                        <a href="{{ route('pelanggan.index') }}" class="btn btn-outline-danger">
-                                            <i class="fas fa-times"></i>
-                                        </a>
-                                    @endif
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-md-6 text-end">
-                            <span class="text-muted">
-                                Showing {{ $dataPelanggan->firstItem() }} - {{ $dataPelanggan->lastItem() }} 
-                                of {{ $dataPelanggan->total() }} entries
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="card-body">
                     <div class="table-responsive">
+                        <form method="GET" action="{{ route('pelanggan.index') }}" class="mb-3">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <select name="gender" class="form-select" onchange="this.form.submit()">
+                                        <option value="">All Gender</option>
+                                        <option value="Male" {{ request('gender') == 'Male' ? 'selected' : '' }}>Male</option>
+                                        <option value="Female" {{ request('gender') == 'Female' ? 'selected' : '' }}>Female</option>
+                                        <option value="Other" {{ request('gender') == 'Other' ? 'selected' : '' }}>Other</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <input type="text" name="search" class="form-control"
+                                            value="{{ request('search') }}" placeholder="Search" aria-label="Search">
+                                        <button type="submit" class="input-group-text">
+                                            <svg class="icon icon-xxs" fill="currentColor" viewBox="0 0 20 20"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd"
+                                                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg>
+                                        </button>
+                                        @if (request('search'))
+                                            <a href="{{ request()->fullUrlWithQuery(['search' => null]) }}"
+                                                class="btn btn-outline-secondary ms-2">Clear</a>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
                         <table class="table table-centered table-nowrap mb-0 rounded">
                             <thead class="thead-light">
                                 <tr>
-                                    <th class="border-0">FIRST NAME</th>
-                                    <th class="border-0">LAST NAME</th>
-                                    <th class="border-0">BIRTHDAY</th>
-                                    <th class="border-0">GENDER</th>
-                                    <th class="border-0">EMAIL</th>
-                                    <th class="border-0">PHONE</th>
-                                    <th class="border-0">ACTION</th>
+                                    <th class="border-0">First Name</th>
+                                    <th class="border-0">Last Name</th>
+                                    <th class="border-0">Birthday</th>
+                                    <th class="border-0">Gender</th>
+                                    <th class="border-0">Email</th>
+                                    <th class="border-0">Phone</th>
+                                    <th class="border-0 text-center">Files</th>
+                                    <th class="border-0 text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($dataPelanggan as $item)
                                     <tr>
-                                        <td>{{ $item->first_name }}</td>
-                                        <td>{{ $item->last_name }}</td>
-                                        <td>{{ $item->birthday ? \Carbon\Carbon::parse($item->birthday)->format('Y-m-d') : '-' }}</td>
-                                        <td>
-                                            <span class="badge 
-                                                @if($item->gender == 'Male') bg-primary
-                                                @elseif($item->gender == 'Female') bg-success
-                                                @else bg-secondary
-                                                @endif">
-                                                {{ $item->gender }}
-                                            </span>
+                                        <td class="align-middle">{{ $item->first_name }}</td>
+                                        <td class="align-middle">{{ $item->last_name }}</td>
+                                        <td class="align-middle">{{ $item->birthday }}</td>
+                                        <td class="align-middle">{{ $item->gender }}</td>
+                                        <td class="align-middle">{{ $item->email }}</td>
+                                        <td class="align-middle">{{ $item->phone }}</td>
+                                        <td class="align-middle text-center">
+                                            @if ($item->files && count($item->files) > 0)
+                                                <div class="d-flex align-items-center justify-content-center">
+                                                    <i class="fas fa-file me-2 text-primary"></i>
+                                                    <span class="badge bg-success rounded-pill">{{ count($item->files) }} Files</span>
+                                                </div>
+                                            @else
+                                                <span class="badge bg-warning text-dark rounded-pill">No Files</span>
+                                            @endif
                                         </td>
-                                        <td>{{ $item->email }}</td>
-                                        <td>{{ $item->phone ?? '-' }}</td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <a href="{{ route('pelanggan.show', $item->pelanggan_id) }}" 
-                                                   class="btn btn-info btn-sm" title="Detail">
-                                                    <i class="fas fa-eye me-1"></i> Detail
-                                                </a>
-                                                <a href="{{ route('pelanggan.edit', $item->pelanggan_id) }}" 
-                                                   class="btn btn-warning btn-sm" title="Edit">
+                                        <td class="align-middle text-center">
+                                            <div class="d-flex gap-2 justify-content-center">
+                                                <a href="{{ route('pelanggan.edit', $item->pelanggan_id) }}"
+                                                   class="btn btn-info btn-sm">
                                                     <i class="fas fa-edit me-1"></i> Edit
                                                 </a>
-                                                <form action="{{ route('pelanggan.destroy', $item->pelanggan_id) }}" 
-                                                      method="POST" style="display:inline">
+                                                <form action="{{ route('pelanggan.destroy', $item->pelanggan_id) }}"
+                                                      method="POST"
+                                                      onsubmit="return confirm('Yakin ingin menghapus data?')">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" 
-                                                            onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"
-                                                            title="Hapus">
+                                                    <button type="submit" class="btn btn-danger btn-sm">
                                                         <i class="fas fa-trash me-1"></i> Hapus
                                                     </button>
                                                 </form>
@@ -133,109 +125,20 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="7" class="text-center py-4">
-                                            <i class="fas fa-user-slash fa-2x text-muted mb-3"></i>
-                                            <p class="text-muted">No customer data found.</p>
-                                            @if($search || $selectedGender != 'All Gender')
-                                                <a href="{{ route('pelanggan.index') }}" class="btn btn-primary">
-                                                    Show All Data
-                                                </a>
-                                            @endif
+                                        <td colspan="8" class="text-center py-4">
+                                            <div class="text-muted">Tidak ada data pelanggan</div>
                                         </td>
                                     </tr>
                                 @endforelse
                             </tbody>
                         </table>
-                    </div>
 
-                    <!-- Pagination -->
-                    @if($dataPelanggan->hasPages())
-                    <div class="card-footer">
-                        <div class="row align-items-center">
-                            <div class="col-sm-4 text-muted">
-                                Showing <strong>{{ $dataPelanggan->firstItem() }}</strong> - 
-                                <strong>{{ $dataPelanggan->lastItem() }}</strong> of 
-                                <strong>{{ $dataPelanggan->total() }}</strong> entries
-                            </div>
-                            <div class="col-sm-8 d-flex justify-content-end">
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination pagination-sm mb-0">
-                                        {{-- Previous Page Link --}}
-                                        @if ($dataPelanggan->onFirstPage())
-                                            <li class="page-item disabled">
-                                                <span class="page-link">&laquo;</span>
-                                            </li>
-                                        @else
-                                            <li class="page-item">
-                                                <a class="page-link" href="{{ $dataPelanggan->previousPageUrl() }}" rel="prev">&laquo;</a>
-                                            </li>
-                                        @endif
-
-                                        {{-- Pagination Elements --}}
-                                        @foreach ($dataPelanggan->getUrlRange(1, $dataPelanggan->lastPage()) as $page => $url)
-                                            @if ($page == $dataPelanggan->currentPage())
-                                                <li class="page-item active">
-                                                    <span class="page-link">{{ $page }}</span>
-                                                </li>
-                                            @else
-                                                <li class="page-item">
-                                                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                                                </li>
-                                            @endif
-                                        @endforeach
-
-                                        {{-- Next Page Link --}}
-                                        @if ($dataPelanggan->hasMorePages())
-                                            <li class="page-item">
-                                                <a class="page-link" href="{{ $dataPelanggan->nextPageUrl() }}" rel="next">&raquo;</a>
-                                            </li>
-                                        @else
-                                            <li class="page-item disabled">
-                                                <span class="page-link">&raquo;</span>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </nav>
-                            </div>
+                        <div class="mt-3">
+                            {{ $dataPelanggan->links('pagination::bootstrap-5') }}
                         </div>
                     </div>
-                    @endif
                 </div>
             </div>
         </div>
     </div>
-    {{-- END MAIN CONTENT --}}
 @endsection
-
-@push('styles')
-<style>
-.pagination {
-    margin-bottom: 0;
-}
-.page-link {
-    color: #6c757d;
-    border: 1px solid #dee2e6;
-}
-.page-item.active .page-link {
-    background-color: #007bff;
-    border-color: #007bff;
-}
-.page-link:hover {
-    color: #0056b3;
-}
-.table th {
-    font-weight: 600;
-    font-size: 0.875rem;
-}
-.badge {
-    font-size: 0.75rem;
-}
-.btn-group .btn {
-    margin-right: 2px;
-}
-.btn-sm {
-    font-size: 0.75rem;
-    padding: 0.25rem 0.5rem;
-}
-</style>
-@endpush

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PegawaiController;
@@ -51,3 +52,7 @@ Route::resource('user', UserController::class);
 Route::resource('pelanggan', PelangganController::class);
 Route::delete('/pelanggan-file/{id}', [PelangganController::class, 'deleteFile'])
     ->name('pelanggan.deleteFile');
+
+Route::get('auth', [AuthController::class,'index'])->name('auth.index');
+Route::post('auth/login', [AuthController::class,'login'])->name ('auth.login');
+Route::get('auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
